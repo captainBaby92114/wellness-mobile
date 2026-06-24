@@ -1,4 +1,4 @@
-import {BACKEND_URL} from '../config';
+import {UPLOAD_URL} from '../config';
 
 export interface UploadOptions {
   videoUri: string;
@@ -49,7 +49,7 @@ export function uploadVideo(options: UploadOptions): Promise<UploadResult> {
     form.append('captureTimestamp', captureTimestamp);
     form.append('deviceModel', deviceModel);
 
-    xhr.open('POST', BACKEND_URL);
+    xhr.open('POST', UPLOAD_URL);
 
     xhr.upload.onprogress = event => {
       if (event.lengthComputable && event.total > 0) {

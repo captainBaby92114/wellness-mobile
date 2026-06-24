@@ -11,7 +11,7 @@ import DeviceInfo from 'react-native-device-info';
 import {DataRow} from '../components/DataRow';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';
 import {uploadVideo, UploadResult} from '../services/uploadService';
-import {BACKEND_URL} from '../config';
+import {UPLOAD_URL} from '../config';
 import {colors, USER_ID} from '../theme';
 
 interface UploadScreenProps {
@@ -102,7 +102,7 @@ export function UploadScreen({
           <DataRow label="Consent version" value={consentVersion} />
           <DataRow label="Captured at" value={captureTimestamp} />
           <DataRow label="Device" value={deviceModel || 'Loading…'} />
-          <DataRow label="Destination" value={BACKEND_URL} />
+          <DataRow label="Destination" value={UPLOAD_URL} />
         </View>
 
         {!uploading && !error && (
