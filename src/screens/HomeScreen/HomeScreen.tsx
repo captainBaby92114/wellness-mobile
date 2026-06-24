@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {DisclaimerFooter} from '../components/DisclaimerFooter';
+import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
 import {styles} from './HomeScreenStyle';
 
 interface HomeScreenProps {

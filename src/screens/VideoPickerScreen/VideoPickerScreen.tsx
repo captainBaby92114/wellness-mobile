@@ -3,15 +3,15 @@ import {
   ActivityIndicator,
   Platform,
   Pressable,
-  SafeAreaView,
   Text,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
-import {DisclaimerFooter} from '../components/DisclaimerFooter';
-import {pickVideoFromPhotos} from '../services/photosPickerService';
-import {colors, CONSENT_VERSION} from '../theme';
+import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {pickVideoFromPhotos} from '../../services/photosPickerService';
+import {colors, CONSENT_VERSION} from '../../theme';
 import {styles} from './VideoPickerScreenStyle';
 
 interface VideoPickerScreenProps {

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Pressable, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {DisclaimerFooter} from '../components/DisclaimerFooter';
-import {colors, CONSENT_VERSION} from '../theme';
+import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {colors, CONSENT_VERSION} from '../../theme';
 import {styles} from './ConsentScreenStyle';
 
 interface ConsentScreenProps {

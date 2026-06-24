@@ -1,3 +1,9 @@
+export interface VideoFormatInfo {
+  videoWidth: number;
+  videoHeight: number;
+  maxFps: number;
+}
+
 export interface Metrics {
   heartRate: number | null;
   hrv: number | null;

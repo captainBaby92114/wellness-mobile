@@ -12,16 +12,13 @@ import {
   useCameraPermission,
   useMicrophonePermission,
 } from 'react-native-vision-camera';
-import {colors} from '../theme';
+import {colors} from '../../theme';
+import type {VideoFormatInfo} from '../../types';
 import {styles} from './CameraScreenStyle';
 
 const MAX_RECORD_SECONDS = 30;
 
-export interface VideoFormatInfo {
-  videoWidth: number;
-  videoHeight: number;
-  maxFps: number;
-}
+export type {VideoFormatInfo};
 
 interface CameraScreenProps {
   onComplete: (videoUri: string, captureTimestamp: string, format: VideoFormatInfo) => void;
@@ -55,13 +52,16 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
     return eligible[0] ?? formats[0];
   }, [device?.formats]);
 
-  const formatInfo: VideoFormatInfo | undefined = format
-    ? {
-        videoWidth: format.videoWidth,
-        videoHeight: format.videoHeight,
-        maxFps: format.maxFps,
-      }
-    : undefined;
+  const formatInfo = useMemo<VideoFormatInfo | undefined>(() => {
+    if (!format) {
+      return undefined;
+    }
+    return {
+      videoWidth: format.videoWidth,
+      videoHeight: format.videoHeight,
+      maxFps: format.maxFps,
+    };
+  }, [format]);
 
   useEffect(() => {
     requestCamera();
@@ -85,7 +85,7 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
   }, [isRecording, stopTimer]);
 
   const startRecording = useCallback(async () => {
-    if (!cameraRef.current || isRecording) {
+    if (!cameraRef.current || isRecording || !formatInfo) {
       return;
     }
 
@@ -112,11 +112,7 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
         const uri = video.path.startsWith('file://')
           ? video.path
           : `file://${video.path}`;
-        onComplete(uri, captureTimestamp, formatInfo ?? {
-          videoWidth: format.videoWidth,
-          videoHeight: format.videoHeight,
-          maxFps: format.maxFps,
-        });
+        onComplete(uri, captureTimestamp, formatInfo);
       },
       onRecordingError: error => {
         stopTimer();

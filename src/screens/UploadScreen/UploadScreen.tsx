@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
-import {DataRow} from '../components/DataRow';
-import {DisclaimerFooter} from '../components/DisclaimerFooter';
-import {uploadVideo} from '../services/uploadService';
-import type {UploadResult} from '../types';
-import {UPLOAD_URL} from '../config';
-import {colors, USER_ID} from '../theme';
+import {DataRow} from '../../components/DataRow/DataRow';
+import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {uploadVideo} from '../../services/uploadService';
+import type {UploadResult} from '../../types';
+import {UPLOAD_URL} from '../../config';
+import {colors, USER_ID} from '../../theme';
 import {styles} from './UploadScreenStyle';
 
 interface UploadScreenProps {
@@ -35,11 +35,7 @@ export function UploadScreen({
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [deviceModel, setDeviceModel] = useState('');
-
-  useEffect(() => {
-    setDeviceModel(DeviceInfo.getModel());
-  }, []);
+  const deviceModel = DeviceInfo.getModel();
 
   const startUpload = async () => {
     setUploading(true);
@@ -53,7 +49,7 @@ export function UploadScreen({
         consentTimestamp,
         consentVersion,
         captureTimestamp,
-        deviceModel,
+        deviceModel: DeviceInfo.getModel(),
         onProgress: setProgress,
       });
       onSuccess(result);
@@ -102,7 +98,7 @@ export function UploadScreen({
           <DataRow label="Consent timestamp" value={consentTimestamp} />
           <DataRow label="Consent version" value={consentVersion} />
           <DataRow label="Captured at" value={captureTimestamp} />
-          <DataRow label="Device" value={deviceModel || 'Loading…'} />
+          <DataRow label="Device" value={deviceModel} />
           <DataRow label="Destination" value={UPLOAD_URL} />
         </View>
 

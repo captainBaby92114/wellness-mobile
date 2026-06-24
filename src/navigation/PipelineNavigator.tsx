@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {HomeScreen} from '../screens/HomeScreen';
-import {ConsentScreen} from '../screens/ConsentScreen';
-import {CameraScreen, VideoFormatInfo} from '../screens/CameraScreen';
-import {PreviewScreen} from '../screens/PreviewScreen';
-import {VideoPickerScreen} from '../screens/VideoPickerScreen';
-import {UploadScreen} from '../screens/UploadScreen';
-import {MetricsScreen} from '../screens/MetricsScreen';
-import type {Screen, UploadResult} from '../types';
+import {HomeScreen} from '../screens/HomeScreen/HomeScreen';
+import {ConsentScreen} from '../screens/ConsentScreen/ConsentScreen';
+import {CameraScreen} from '../screens/CameraScreen/CameraScreen';
+import {PreviewScreen} from '../screens/PreviewScreen/PreviewScreen';
+import {VideoPickerScreen} from '../screens/VideoPickerScreen/VideoPickerScreen';
+import {UploadScreen} from '../screens/UploadScreen/UploadScreen';
+import {MetricsScreen} from '../screens/MetricsScreen/MetricsScreen';
+import type {Screen, UploadResult, VideoFormatInfo} from '../types';
 
 type Flow = 'record' | 'upload' | null;
 
@@ -21,21 +21,29 @@ export function PipelineNavigator() {
   const [format, setFormat] = useState<VideoFormatInfo | undefined>();
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
 
-  const goHome = () => {
-    setScreen('home');
-    setFlow(null);
+  const resetSession = () => {
+    setConsentTimestamp('');
+    setConsentVersion('');
     setVideoUri('');
     setCaptureTimestamp('');
     setFormat(undefined);
     setUploadResult(null);
   };
 
+  const goHome = () => {
+    resetSession();
+    setFlow(null);
+    setScreen('home');
+  };
+
   const startRecordFlow = () => {
+    resetSession();
     setFlow('record');
     setScreen('consent');
   };
 
   const startUploadFlow = () => {
+    resetSession();
     setFlow('upload');
     setScreen('picker');
   };

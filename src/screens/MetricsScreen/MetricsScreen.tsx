@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {DisclaimerFooter} from '../components/DisclaimerFooter';
-import type {Metrics, UploadResult} from '../types';
+import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import type {Metrics, UploadResult} from '../../types';
 import {styles} from './MetricsScreenStyle';
 
 interface MetricsScreenProps {

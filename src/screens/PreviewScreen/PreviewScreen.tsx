@@ -8,9 +8,9 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import Video from 'react-native-video';
-import {DataRow} from '../components/DataRow';
-import {colors} from '../theme';
-import type {VideoFormatInfo} from './CameraScreen';
+import {DataRow} from '../../components/DataRow/DataRow';
+import {colors} from '../../theme';
+import type {VideoFormatInfo} from '../../types';
 import {styles} from './PreviewScreenStyle';
 
 interface PreviewScreenProps {
