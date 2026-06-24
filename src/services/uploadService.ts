@@ -1,4 +1,7 @@
 import {UPLOAD_URL} from '../config';
+import type {UploadResult} from '../types';
+
+export type {UploadResult};
 
 export interface UploadOptions {
   videoUri: string;
@@ -8,16 +11,6 @@ export interface UploadOptions {
   captureTimestamp: string;
   deviceModel: string;
   onProgress: (percent: number) => void;
-}
-
-export interface UploadResult {
-  savedTo: 'local' | 's3';
-  savedPath?: string;
-  s3Key?: string;
-  s3Url?: string;
-  fileSizeBytes: number;
-  uploadedAt: string;
-  metadata: Record<string, string>;
 }
 
 export function uploadVideo(options: UploadOptions): Promise<UploadResult> {

@@ -5,17 +5,8 @@ import {CameraScreen, VideoFormatInfo} from '../screens/CameraScreen';
 import {PreviewScreen} from '../screens/PreviewScreen';
 import {VideoPickerScreen} from '../screens/VideoPickerScreen';
 import {UploadScreen} from '../screens/UploadScreen';
-import {SuccessScreen} from '../screens/SuccessScreen';
-import {UploadResult} from '../services/uploadService';
-
-type Screen =
-  | 'home'
-  | 'consent'
-  | 'camera'
-  | 'preview'
-  | 'picker'
-  | 'upload'
-  | 'success';
+import {MetricsScreen} from '../screens/MetricsScreen';
+import type {Screen, UploadResult} from '../types';
 
 type Flow = 'record' | 'upload' | null;
 
@@ -93,15 +84,7 @@ export function PipelineNavigator() {
 
   const handleUploadSuccess = (result: UploadResult) => {
     setUploadResult(result);
-    setScreen('success');
-  };
-
-  const handleScanAgain = () => {
-    setVideoUri('');
-    setCaptureTimestamp('');
-    setFormat(undefined);
-    setUploadResult(null);
-    setScreen('camera');
+    setScreen('metrics');
   };
 
   switch (screen) {
@@ -172,12 +155,13 @@ export function PipelineNavigator() {
         />
       );
 
-    case 'success':
+    case 'metrics':
       return uploadResult ? (
-        <SuccessScreen
-          result={uploadResult}
-          onScanAgain={handleScanAgain}
-          onHome={goHome}
+        <MetricsScreen
+          metrics={uploadResult.metrics}
+          uploadResult={uploadResult}
+          onScanAgain={goHome}
+          onDone={goHome}
         />
       ) : null;
 

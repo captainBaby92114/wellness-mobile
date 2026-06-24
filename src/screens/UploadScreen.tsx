@@ -10,7 +10,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
 import {DataRow} from '../components/DataRow';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';
-import {uploadVideo, UploadResult} from '../services/uploadService';
+import {uploadVideo} from '../services/uploadService';
+import type {UploadResult} from '../types';
 import {UPLOAD_URL} from '../config';
 import {colors, USER_ID} from '../theme';
 

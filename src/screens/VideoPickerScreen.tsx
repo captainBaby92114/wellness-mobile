@@ -130,7 +130,7 @@ export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
           {picking ? (
             <ActivityIndicator color={colors.text} />
           ) : (
-            <Text style={styles.pickButtonText}>Choose the Video</Text>
+                <Text style={styles.pickButtonText}>Choose the Video</Text>
           )}
         </Pressable>
 
