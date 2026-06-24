@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import DocumentPicker, {types} from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
+import {Asset} from 'react-native-image-picker';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';
+import {pickVideoFromPhotos} from '../services/photosPickerService';
 import {colors, CONSENT_VERSION} from '../theme';
 
 interface VideoPickerScreenProps {
@@ -25,65 +28,121 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
+function captureTimestampFromAsset(asset: Asset): string {
+  if (asset.timestamp) {
+    const parsed = Number(asset.timestamp);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      return new Date(parsed).toISOString();
+    }
+  }
+  return new Date().toISOString();
+}
+
+async function resolveVideoUri(asset: Asset): Promise<string> {
+  const uri = asset.uri;
+  if (!uri) {
+    throw new Error('No video URI returned from Photos');
+  }
+
+  if (Platform.OS === 'android' && uri.startsWith('content://')) {
+    const ext = asset.type?.includes('quicktime') ? 'mov' : 'mp4';
+    const dest = `${RNFS.CachesDirectoryPath}/photos-pick-${Date.now()}.${ext}`;
+    await RNFS.copyFile(uri, dest);
+    return `file://${dest}`;
+  }
+
+  return uri;
+}
+
 export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
   const [filename, setFilename] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [videoUri, setVideoUri] = useState<string | null>(null);
+  const [captureTimestamp, setCaptureTimestamp] = useState<string | null>(null);
   const [picking, setPicking] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handlePick = async () => {
     try {
       setPicking(true);
-      const result = await DocumentPicker.pick({
-        type: [types.video],
-        allowMultiSelection: false,
+      setError(null);
+
+      const result = await pickVideoFromPhotos({
+        mediaType: 'video',
+        selectionLimit: 1,
+        videoQuality: 'high',
       });
 
-      const file = result[0];
-      const uri = file.uri;
-      const name = file.name ?? 'video.mp4';
-      const size = file.size ?? 0;
+      if (result.didCancel) {
+        return;
+      }
+
+      if (result.errorCode) {
+        setError(result.errorMessage ?? 'Could not open Photos');
+        return;
+      }
+
+      const asset = result.assets?.[0];
+      if (!asset?.uri) {
+        setError('No video was selected');
+        return;
+      }
+
+      const uri = await resolveVideoUri(asset);
+      const name = asset.fileName ?? 'video.mp4';
+      const size = asset.fileSize ?? 0;
+      const capturedAt = captureTimestampFromAsset(asset);
 
       setVideoUri(uri);
       setFilename(name);
       setFileSize(size);
-    } catch (error) {
-      if (!DocumentPicker.isCancel(error)) {
-        console.error('Picker error:', error);
-      }
+      setCaptureTimestamp(capturedAt);
+    } catch (pickError) {
+      console.error('Photos picker error:', pickError);
+      setError(
+        pickError instanceof Error
+          ? pickError.message
+          : 'Could not load video from Photos',
+      );
     } finally {
       setPicking(false);
     }
   };
 
   const handleUpload = () => {
-    if (!videoUri) {
+    if (!videoUri || !captureTimestamp) {
       return;
     }
-    const now = new Date().toISOString();
-    onUpload(videoUri, now, now, CONSENT_VERSION);
+    const consentTimestamp = new Date().toISOString();
+    onUpload(videoUri, captureTimestamp, consentTimestamp, CONSENT_VERSION);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Upload Existing Video</Text>
+        <Text style={styles.title}>Upload from Photos</Text>
         <Text style={styles.subtitle}>
-          Select an .mp4 or .mov file from your device. The original file will
-          be uploaded without compression.
+          Choose a video from your Photos library. The original file will be
+          uploaded without compression.
         </Text>
 
         <Pressable style={styles.pickButton} onPress={handlePick} disabled={picking}>
           {picking ? (
             <ActivityIndicator color={colors.text} />
           ) : (
-            <Text style={styles.pickButtonText}>Choose video file</Text>
+            <Text style={styles.pickButtonText}>Choose from Photos</Text>
           )}
         </Pressable>
 
+        {error && (
+          <View style={styles.errorBox}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+        )}
+
         {filename && fileSize != null && (
           <View style={styles.fileInfo}>
-            <Text style={styles.fileLabel}>Selected file</Text>
+            <Text style={styles.fileLabel}>Selected video</Text>
             <Text style={styles.fileName}>{filename}</Text>
             <Text style={styles.fileSize}>{formatBytes(fileSize)}</Text>
           </View>
@@ -143,6 +202,18 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontSize: 16,
     fontWeight: '600',
+  },
+  errorBox: {
+    backgroundColor: colors.card,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors.danger,
+  },
+  errorText: {
+    color: colors.danger,
+    fontSize: 14,
   },
   fileInfo: {
     backgroundColor: colors.card,
