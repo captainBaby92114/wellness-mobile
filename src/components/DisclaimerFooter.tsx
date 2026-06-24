@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {colors} from '../theme';
+import {Text, View} from 'react-native';
+import {styles} from './DisclaimerFooterStyle';
 
 export function DisclaimerFooter() {
   return (
@@ -11,17 +11,3 @@ export function DisclaimerFooter() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  footer: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: colors.card,
-  },
-  text: {
-    color: colors.textMuted,
-    fontSize: 12,
-    textAlign: 'center',
-  },
-});
