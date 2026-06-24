@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Switch,
   Text,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';
 import {colors, CONSENT_VERSION} from '../theme';
 

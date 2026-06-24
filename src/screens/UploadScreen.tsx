@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
 import {DataRow} from '../components/DataRow';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';

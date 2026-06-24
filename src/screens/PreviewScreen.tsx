@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import Video from 'react-native-video';
 import {DataRow} from '../components/DataRow';

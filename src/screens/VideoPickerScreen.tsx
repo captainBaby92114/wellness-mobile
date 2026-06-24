@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import {DisclaimerFooter} from '../components/DisclaimerFooter';
 import {colors, CONSENT_VERSION} from '../theme';
