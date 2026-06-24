@@ -120,9 +120,9 @@ export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Upload from Photos</Text>
+        <Text style={styles.title}>Upload the Video</Text>
         <Text style={styles.subtitle}>
-          Choose a video from your Photos library. The original file will be
+          Choose a video from the library. The original file will be
           uploaded without compression.
         </Text>
 
@@ -130,7 +130,7 @@ export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
           {picking ? (
             <ActivityIndicator color={colors.text} />
           ) : (
-            <Text style={styles.pickButtonText}>Choose from Photos</Text>
+            <Text style={styles.pickButtonText}>Choose the Video</Text>
           )}
         </Pressable>
 

@@ -20,7 +20,7 @@ export function HomeScreen({onRecord, onUploadExisting}: HomeScreenProps) {
       <View style={styles.content}>
         <Text style={styles.title}>Wellness Scan</Text>
         <Text style={styles.subtitle}>
-          Record a new scan or upload an existing video from your Photos library.
+          Record a new scan or upload an existing video from the library.
         </Text>
 
         <Pressable style={styles.primaryButton} onPress={onRecord}>
@@ -28,7 +28,7 @@ export function HomeScreen({onRecord, onUploadExisting}: HomeScreenProps) {
         </Pressable>
 
         <Pressable style={styles.secondaryButton} onPress={onUploadExisting}>
-          <Text style={styles.secondaryButtonText}>Upload from Photos</Text>
+          <Text style={styles.secondaryButtonText}>Upload the Video</Text>
         </Pressable>
       </View>
       <DisclaimerFooter />
