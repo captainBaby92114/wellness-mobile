@@ -98,7 +98,6 @@ export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
       setFileSize(size);
       setCaptureTimestamp(capturedAt);
     } catch (pickError) {
-      console.error('Photos picker error:', pickError);
       setError(
         pickError instanceof Error
           ? pickError.message

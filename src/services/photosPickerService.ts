@@ -12,7 +12,6 @@ type NativeImagePicker = {
 };
 
 function getNativeImagePicker(): NativeImagePicker | null {
-  // Turbo Module (New Architecture)
   // @ts-expect-error __turboModuleProxy is a RN runtime global
   if (global.__turboModuleProxy != null) {
     try {
@@ -21,12 +20,9 @@ function getNativeImagePicker(): NativeImagePicker | null {
       if (turbo?.launchImageLibrary) {
         return turbo;
       }
-    } catch {
-      // Fall through to legacy module
-    }
+    } catch {}
   }
 
-  // Legacy bridge module
   const legacy = NativeModules.ImagePicker as NativeImagePicker | undefined;
   if (legacy?.launchImageLibrary) {
     return legacy;

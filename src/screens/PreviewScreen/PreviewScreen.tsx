@@ -58,8 +58,7 @@ export function PreviewScreen({
         if (!cancelled) {
           setFileSize(Number(stat.size));
         }
-      } catch (error) {
-        console.error('Failed to stat video:', error);
+      } catch {
       } finally {
         if (!cancelled) {
           setLoadingMeta(false);

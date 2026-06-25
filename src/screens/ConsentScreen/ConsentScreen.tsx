@@ -18,7 +18,6 @@ export function ConsentScreen({onAgree, onBack}: ConsentScreenProps) {
       return;
     }
     const consentTimestamp = new Date().toISOString();
-    console.log('Consent granted:', {consentTimestamp, consentVersion: CONSENT_VERSION});
     onAgree(consentTimestamp, CONSENT_VERSION);
   };
 

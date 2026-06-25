@@ -121,10 +121,9 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
         const sdkMetrics = await getShenAiMetrics();
         onComplete(uri, captureTimestamp, formatInfo, sdkMetrics);
       },
-      onRecordingError: error => {
+      onRecordingError: () => {
         stopTimer();
         setIsRecording(false);
-        console.error('Recording error:', error);
       },
     });
   }, [formatInfo, isRecording, onComplete, stopRecording, stopTimer]);

@@ -21,8 +21,6 @@ type ShenAiModule = {
 
 function loadShenAi(): ShenAiModule | null {
   try {
-    // Optional native dependency. Absent in dev/simulator builds, which is
-    // expected: a null result makes the backend fall back to Circadify.
     return require('react-native-shenai-sdk') as ShenAiModule;
   } catch {
     return null;
