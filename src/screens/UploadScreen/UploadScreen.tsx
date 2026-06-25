@@ -10,7 +10,7 @@ import DeviceInfo from 'react-native-device-info';
 import {DataRow} from '../../components/DataRow/DataRow';
 import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
 import {uploadVideo} from '../../services/uploadService';
-import type {UploadResult} from '../../types';
+import type {CaptureSource, Metrics, UploadResult} from '../../types';
 import {UPLOAD_URL} from '../../config';
 import {colors, USER_ID} from '../../theme';
 import {styles} from './UploadScreenStyle';
@@ -20,6 +20,8 @@ interface UploadScreenProps {
   captureTimestamp: string;
   consentTimestamp: string;
   consentVersion: string;
+  source: CaptureSource;
+  sdkMetrics: Metrics | null;
   onSuccess: (result: UploadResult) => void;
   onBack: () => void;
 }
@@ -29,6 +31,8 @@ export function UploadScreen({
   captureTimestamp,
   consentTimestamp,
   consentVersion,
+  source,
+  sdkMetrics,
   onSuccess,
   onBack,
 }: UploadScreenProps) {
@@ -50,6 +54,8 @@ export function UploadScreen({
         consentVersion,
         captureTimestamp,
         deviceModel: DeviceInfo.getModel(),
+        source,
+        sdkMetrics,
         onProgress: setProgress,
       });
       onSuccess(result);

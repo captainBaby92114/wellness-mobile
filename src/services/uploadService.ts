@@ -1,5 +1,5 @@
 import {UPLOAD_URL} from '../config';
-import type {UploadResult} from '../types';
+import type {CaptureSource, Metrics, UploadResult} from '../types';
 
 export type {UploadResult};
 
@@ -10,6 +10,8 @@ export interface UploadOptions {
   consentVersion: string;
   captureTimestamp: string;
   deviceModel: string;
+  source: CaptureSource;
+  sdkMetrics: Metrics | null;
   onProgress: (percent: number) => void;
 }
 
@@ -21,6 +23,8 @@ export function uploadVideo(options: UploadOptions): Promise<UploadResult> {
     consentVersion,
     captureTimestamp,
     deviceModel,
+    source,
+    sdkMetrics,
     onProgress,
   } = options;
 
@@ -41,6 +45,10 @@ export function uploadVideo(options: UploadOptions): Promise<UploadResult> {
     form.append('consentVersion', consentVersion);
     form.append('captureTimestamp', captureTimestamp);
     form.append('deviceModel', deviceModel);
+    form.append('source', source);
+    if (sdkMetrics) {
+      form.append('sdkMetrics', JSON.stringify(sdkMetrics));
+    }
 
     xhr.open('POST', UPLOAD_URL);
 

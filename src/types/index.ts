@@ -13,7 +13,12 @@ export interface Metrics {
   systolicBp: number | null;
   diastolicBp: number | null;
   sessionId: string;
+  sdkDurationMs?: number;
 }
+
+export type CaptureSource = 'camera' | 'picker';
+
+export type MetricsSource = 'shenai' | 'circadify' | 'none';
 
 export interface UploadResult {
   savedTo: 'local' | 's3';
@@ -24,6 +29,7 @@ export interface UploadResult {
   uploadedAt: string;
   metadata: Record<string, string>;
   metrics: Metrics | null;
+  metricsSource?: MetricsSource;
 }
 
 export type Screen =

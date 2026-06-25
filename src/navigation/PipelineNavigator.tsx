@@ -6,7 +6,13 @@ import {PreviewScreen} from '../screens/PreviewScreen/PreviewScreen';
 import {VideoPickerScreen} from '../screens/VideoPickerScreen/VideoPickerScreen';
 import {UploadScreen} from '../screens/UploadScreen/UploadScreen';
 import {MetricsScreen} from '../screens/MetricsScreen/MetricsScreen';
-import type {Screen, UploadResult, VideoFormatInfo} from '../types';
+import type {
+  CaptureSource,
+  Metrics,
+  Screen,
+  UploadResult,
+  VideoFormatInfo,
+} from '../types';
 
 type Flow = 'record' | 'upload' | null;
 
@@ -19,6 +25,8 @@ export function PipelineNavigator() {
   const [videoUri, setVideoUri] = useState('');
   const [captureTimestamp, setCaptureTimestamp] = useState('');
   const [format, setFormat] = useState<VideoFormatInfo | undefined>();
+  const [source, setSource] = useState<CaptureSource>('picker');
+  const [sdkMetrics, setSdkMetrics] = useState<Metrics | null>(null);
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
 
   const resetSession = () => {
@@ -27,6 +35,8 @@ export function PipelineNavigator() {
     setVideoUri('');
     setCaptureTimestamp('');
     setFormat(undefined);
+    setSource('picker');
+    setSdkMetrics(null);
     setUploadResult(null);
   };
 
@@ -39,12 +49,14 @@ export function PipelineNavigator() {
   const startRecordFlow = () => {
     resetSession();
     setFlow('record');
+    setSource('camera');
     setScreen('consent');
   };
 
   const startUploadFlow = () => {
     resetSession();
     setFlow('upload');
+    setSource('picker');
     setScreen('picker');
   };
 
@@ -58,10 +70,12 @@ export function PipelineNavigator() {
     uri: string,
     timestamp: string,
     fmt: VideoFormatInfo,
+    metrics: Metrics | null,
   ) => {
     setVideoUri(uri);
     setCaptureTimestamp(timestamp);
     setFormat(fmt);
+    setSdkMetrics(metrics);
     setScreen('preview');
   };
 
@@ -152,6 +166,8 @@ export function PipelineNavigator() {
           captureTimestamp={captureTimestamp}
           consentTimestamp={consentTimestamp}
           consentVersion={consentVersion}
+          source={source}
+          sdkMetrics={sdkMetrics}
           onSuccess={handleUploadSuccess}
           onBack={() => {
             if (flow === 'record') {

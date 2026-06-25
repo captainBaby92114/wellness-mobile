@@ -120,11 +120,11 @@ export function MetricsScreen({
         ) : (
           <View style={styles.unavailableCard}>
             <Text style={styles.unavailableTitle}>
-              ⚠️  Metrics unavailable
+              ⚠️  Can't fetch metrics
             </Text>
             <Text style={styles.unavailableBody}>
-              The scan could not be processed. Your video was saved
-              successfully.
+              Your video was saved, but neither Shen.AI nor Circadify could
+              return wellness metrics for this scan.
             </Text>
           </View>
         )}

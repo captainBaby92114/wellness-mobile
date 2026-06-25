@@ -35,10 +35,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  primaryButtonDisabled: {
+    backgroundColor: colors.card,
+    opacity: 0.5,
+  },
   primaryButtonText: {
     color: colors.text,
     fontSize: 16,
     fontWeight: '600',
+  },
+  hint: {
+    color: colors.textMuted,
+    fontSize: 13,
+    textAlign: 'center',
+    marginBottom: 16,
   },
   secondaryButton: {
     backgroundColor: colors.card,

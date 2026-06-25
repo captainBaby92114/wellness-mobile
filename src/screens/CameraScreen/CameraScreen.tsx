@@ -13,7 +13,8 @@ import {
   useMicrophonePermission,
 } from 'react-native-vision-camera';
 import {colors} from '../../theme';
-import type {VideoFormatInfo} from '../../types';
+import {getShenAiMetrics} from '../../services/shenaiService';
+import type {Metrics, VideoFormatInfo} from '../../types';
 import {styles} from './CameraScreenStyle';
 
 const MAX_RECORD_SECONDS = 30;
@@ -21,7 +22,12 @@ const MAX_RECORD_SECONDS = 30;
 export type {VideoFormatInfo};
 
 interface CameraScreenProps {
-  onComplete: (videoUri: string, captureTimestamp: string, format: VideoFormatInfo) => void;
+  onComplete: (
+    videoUri: string,
+    captureTimestamp: string,
+    format: VideoFormatInfo,
+    sdkMetrics: Metrics | null,
+  ) => void;
   onBack: () => void;
 }
 
@@ -106,13 +112,14 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
     cameraRef.current.startRecording({
       fileType: 'mp4',
       videoCodec: 'h264',
-      onRecordingFinished: video => {
+      onRecordingFinished: async video => {
         stopTimer();
         setIsRecording(false);
         const uri = video.path.startsWith('file://')
           ? video.path
           : `file://${video.path}`;
-        onComplete(uri, captureTimestamp, formatInfo);
+        const sdkMetrics = await getShenAiMetrics();
+        onComplete(uri, captureTimestamp, formatInfo, sdkMetrics);
       },
       onRecordingError: error => {
         stopTimer();
