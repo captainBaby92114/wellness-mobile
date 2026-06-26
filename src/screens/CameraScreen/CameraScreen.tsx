@@ -1,10 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   Camera,
@@ -12,6 +7,11 @@ import {
   useCameraPermission,
   useMicrophonePermission,
 } from 'react-native-vision-camera';
+import {
+  CameraControls,
+  CameraOverlay,
+  RecordingIndicator,
+} from '../../components/camera';
 import {colors} from '../../theme';
 import {getShenAiMetrics} from '../../services/shenaiService';
 import type {Metrics, VideoFormatInfo} from '../../types';
@@ -100,13 +100,7 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
     setElapsedSeconds(0);
 
     timerRef.current = setInterval(() => {
-      setElapsedSeconds(prev => {
-        const next = prev + 1;
-        if (next >= MAX_RECORD_SECONDS) {
-          stopRecording();
-        }
-        return next;
-      });
+      setElapsedSeconds(prev => prev + 1);
     }, 1000);
 
     cameraRef.current.startRecording({
@@ -126,7 +120,13 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
         setIsRecording(false);
       },
     });
-  }, [formatInfo, isRecording, onComplete, stopRecording, stopTimer]);
+  }, [formatInfo, isRecording, onComplete, stopTimer]);
+
+  useEffect(() => {
+    if (isRecording && elapsedSeconds >= MAX_RECORD_SECONDS) {
+      stopRecording();
+    }
+  }, [isRecording, elapsedSeconds, stopRecording]);
 
   useEffect(() => {
     return () => stopTimer();
@@ -174,37 +174,18 @@ export function CameraScreen({onComplete, onBack}: CameraScreenProps) {
           videoStabilizationMode="standard"
         />
 
-        <View style={styles.overlay}>
-          <View style={styles.faceGuide} />
-        </View>
+        <CameraOverlay />
 
-        {isRecording && (
-          <View style={styles.recBar}>
-            <View style={styles.recDot} />
-            <Text style={styles.recText}>REC</Text>
-            <Text style={styles.timerText}>
-              {String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:
-              {String(elapsedSeconds % 60).padStart(2, '0')}
-            </Text>
-          </View>
-        )}
+        {isRecording && <RecordingIndicator elapsedSeconds={elapsedSeconds} />}
 
         <Text style={styles.formatLabel}>{formatLabel}</Text>
       </View>
 
-      <View style={styles.controls}>
-        <Pressable style={styles.backButton} onPress={onBack} disabled={isRecording}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.recordButton, isRecording && styles.recordButtonActive]}
-          onPress={isRecording ? stopRecording : startRecording}>
-          <Text style={styles.recordButtonText}>
-            {isRecording ? 'Stop' : 'Record'}
-          </Text>
-        </Pressable>
-      </View>
+      <CameraControls
+        isRecording={isRecording}
+        onBack={onBack}
+        onToggleRecording={isRecording ? stopRecording : startRecording}
+      />
     </SafeAreaView>
   );
 }

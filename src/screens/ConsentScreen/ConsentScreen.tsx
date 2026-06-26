@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Pressable, Switch, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
-import {colors, CONSENT_VERSION} from '../../theme';
+import {DisclaimerFooter} from '../../components/common';
+import {ConsentToggle} from '../../components/consent';
+import {CONSENT_VERSION} from '../../theme';
 import {styles} from './ConsentScreenStyle';
 
 interface ConsentScreenProps {
@@ -35,15 +36,7 @@ export function ConsentScreen({onAgree, onBack}: ConsentScreenProps) {
           and upload.
         </Text>
 
-        <View style={styles.toggleRow}>
-          <Text style={styles.toggleLabel}>I consent to recording and upload</Text>
-          <Switch
-            value={optedIn}
-            onValueChange={setOptedIn}
-            trackColor={{false: colors.card, true: colors.accent}}
-            thumbColor={colors.text}
-          />
-        </View>
+        <ConsentToggle value={optedIn} onValueChange={setOptedIn} />
 
         <Pressable
           style={[styles.button, !optedIn && styles.buttonDisabled]}

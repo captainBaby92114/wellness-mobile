@@ -29,9 +29,6 @@ export const styles = StyleSheet.create({
   loader: {
     marginVertical: 16,
   },
-  metadata: {
-    marginBottom: 16,
-  },
   actions: {
     flexDirection: 'row',
     gap: 12,

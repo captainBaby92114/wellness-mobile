@@ -1,7 +1,8 @@
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {DisclaimerFooter} from '../../components/common';
+import {ScanActionButtons} from '../../components/home';
 import {useCameraAvailable} from '../../hooks/useCameraAvailable';
 import {styles} from './HomeScreenStyle';
 
@@ -21,27 +22,11 @@ export function HomeScreen({onRecord, onUploadExisting}: HomeScreenProps) {
           Record a new scan or upload an existing video from the library.
         </Text>
 
-        <Pressable
-          style={[
-            styles.primaryButton,
-            !cameraAvailable && styles.primaryButtonDisabled,
-          ]}
-          onPress={onRecord}
-          disabled={!cameraAvailable}>
-          <Text style={styles.primaryButtonText}>
-            {cameraAvailable ? 'Record new scan' : 'Camera unavailable'}
-          </Text>
-        </Pressable>
-
-        {!cameraAvailable && (
-          <Text style={styles.hint}>
-            No camera detected. You can still upload an existing video.
-          </Text>
-        )}
-
-        <Pressable style={styles.secondaryButton} onPress={onUploadExisting}>
-          <Text style={styles.secondaryButtonText}>Upload the Video</Text>
-        </Pressable>
+        <ScanActionButtons
+          cameraAvailable={cameraAvailable}
+          onRecord={onRecord}
+          onUploadExisting={onUploadExisting}
+        />
       </View>
       <DisclaimerFooter />
     </SafeAreaView>

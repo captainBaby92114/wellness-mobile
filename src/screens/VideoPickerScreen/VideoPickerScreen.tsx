@@ -9,7 +9,8 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
-import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {DisclaimerFooter, ErrorBox} from '../../components/common';
+import {SelectedFileInfo} from '../../components/videoPicker';
 import {pickVideoFromPhotos} from '../../services/photosPickerService';
 import {colors, CONSENT_VERSION} from '../../theme';
 import {styles} from './VideoPickerScreenStyle';
@@ -22,10 +23,6 @@ interface VideoPickerScreenProps {
     consentVersion: string,
   ) => void;
   onBack: () => void;
-}
-
-function formatBytes(bytes: number): string {
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
 function captureTimestampFromAsset(asset: Asset): string {
@@ -129,22 +126,14 @@ export function VideoPickerScreen({onUpload, onBack}: VideoPickerScreenProps) {
           {picking ? (
             <ActivityIndicator color={colors.text} />
           ) : (
-                <Text style={styles.pickButtonText}>Choose the Video</Text>
+            <Text style={styles.pickButtonText}>Choose the Video</Text>
           )}
         </Pressable>
 
-        {error && (
-          <View style={styles.errorBox}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        )}
+        {error && <ErrorBox message={error} />}
 
         {filename && fileSize != null && (
-          <View style={styles.fileInfo}>
-            <Text style={styles.fileLabel}>Selected video</Text>
-            <Text style={styles.fileName}>{filename}</Text>
-            <Text style={styles.fileSize}>{formatBytes(fileSize)}</Text>
-          </View>
+          <SelectedFileInfo filename={filename} fileSize={fileSize} />
         )}
 
         <Text style={styles.qualityNote}>

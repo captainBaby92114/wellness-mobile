@@ -1,14 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFS from 'react-native-fs';
 import Video from 'react-native-video';
-import {DataRow} from '../../components/DataRow/DataRow';
+import {VideoMetaList} from '../../components/preview';
 import {colors} from '../../theme';
 import type {VideoFormatInfo} from '../../types';
 import {styles} from './PreviewScreenStyle';
@@ -19,22 +14,6 @@ interface PreviewScreenProps {
   format?: VideoFormatInfo;
   onRetake: () => void;
   onUseVideo: () => void;
-}
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) {
-    return `${bytes} B`;
-  }
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`;
-  }
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-}
-
-function formatDuration(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${String(secs).padStart(2, '0')}`;
 }
 
 export function PreviewScreen({
@@ -94,18 +73,12 @@ export function PreviewScreen({
         {loadingMeta ? (
           <ActivityIndicator color={colors.accent} style={styles.loader} />
         ) : (
-          <View style={styles.metadata}>
-            <DataRow
-              label="Duration"
-              value={duration != null ? formatDuration(duration) : 'Loading…'}
-            />
-            <DataRow label="Resolution" value={resolution} />
-            <DataRow
-              label="File size"
-              value={fileSize != null ? formatBytes(fileSize) : 'Unknown'}
-            />
-            <DataRow label="Captured at" value={captureTimestamp} />
-          </View>
+          <VideoMetaList
+            duration={duration}
+            fileSize={fileSize}
+            resolution={resolution}
+            captureTimestamp={captureTimestamp}
+          />
         )}
 
         <View style={styles.actions}>

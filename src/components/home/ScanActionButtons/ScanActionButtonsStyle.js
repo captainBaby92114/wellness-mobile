@@ -1,43 +1,38 @@
 import {StyleSheet} from 'react-native';
-import {colors} from '../../theme';
+import {colors} from '../../../theme';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  content: {
-    padding: 24,
-    paddingBottom: 16,
-  },
-  heading: {
-    color: colors.text,
-    fontSize: 22,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  subheading: {
-    color: '#6B7280',
-    fontSize: 14,
-    marginBottom: 24,
-  },
   primaryButton: {
     backgroundColor: colors.accent,
     paddingVertical: 16,
-    borderRadius: 8,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    width: '100%',
     alignItems: 'center',
-    marginTop: 8,
+    marginBottom: 16,
+  },
+  primaryButtonDisabled: {
+    backgroundColor: colors.card,
+    opacity: 0.5,
   },
   primaryButtonText: {
     color: colors.text,
     fontSize: 16,
     fontWeight: '600',
   },
+  hint: {
+    color: colors.textMuted,
+    fontSize: 13,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
   secondaryButton: {
+    backgroundColor: colors.card,
     paddingVertical: 16,
-    borderRadius: 8,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    width: '100%',
     alignItems: 'center',
-    marginTop: 8,
     borderWidth: 1,
     borderColor: colors.accent,
   },

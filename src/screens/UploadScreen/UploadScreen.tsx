@@ -1,14 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DeviceInfo from 'react-native-device-info';
-import {DataRow} from '../../components/DataRow/DataRow';
-import {DisclaimerFooter} from '../../components/DisclaimerFooter/DisclaimerFooter';
+import {DisclaimerFooter, ErrorBox, ProgressBar} from '../../components/common';
+import {UploadMetaList} from '../../components/upload';
 import {uploadVideo} from '../../services/uploadService';
 import type {CaptureSource, Metrics, UploadResult} from '../../types';
 import {UPLOAD_URL} from '../../config';
@@ -76,9 +71,7 @@ export function UploadScreen({
         <Text style={styles.title}>Uploading Video</Text>
 
         <View style={styles.progressContainer}>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, {width: `${progress}%`}]} />
-          </View>
+          <ProgressBar percent={progress} />
           <Text style={styles.progressText}>{progress}%</Text>
         </View>
 
@@ -90,23 +83,16 @@ export function UploadScreen({
           />
         )}
 
-        {error && (
-          <View style={styles.errorBox}>
-            <Text style={styles.errorText}>{error}</Text>
-            <Pressable style={styles.retryButton} onPress={startUpload}>
-              <Text style={styles.retryButtonText}>Retry</Text>
-            </Pressable>
-          </View>
-        )}
+        {error && <ErrorBox message={error} onRetry={startUpload} />}
 
-        <View style={styles.metadata}>
-          <DataRow label="User" value={USER_ID} />
-          <DataRow label="Consent timestamp" value={consentTimestamp} />
-          <DataRow label="Consent version" value={consentVersion} />
-          <DataRow label="Captured at" value={captureTimestamp} />
-          <DataRow label="Device" value={deviceModel} />
-          <DataRow label="Destination" value={UPLOAD_URL} />
-        </View>
+        <UploadMetaList
+          userId={USER_ID}
+          consentTimestamp={consentTimestamp}
+          consentVersion={consentVersion}
+          captureTimestamp={captureTimestamp}
+          deviceModel={deviceModel}
+          destination={UPLOAD_URL}
+        />
 
         {!uploading && !error && (
           <Pressable style={styles.backButton} onPress={onBack}>

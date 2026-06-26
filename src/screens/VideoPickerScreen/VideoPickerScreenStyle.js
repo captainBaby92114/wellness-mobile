@@ -36,39 +36,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  errorBox: {
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: colors.danger,
-  },
-  errorText: {
-    color: colors.danger,
-    fontSize: 14,
-  },
-  fileInfo: {
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-  },
-  fileLabel: {
-    color: colors.textMuted,
-    fontSize: 12,
-    marginBottom: 4,
-  },
-  fileName: {
-    color: colors.text,
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  fileSize: {
-    color: colors.textMuted,
-    fontSize: 14,
-  },
   qualityNote: {
     color: colors.textMuted,
     fontSize: 13,
